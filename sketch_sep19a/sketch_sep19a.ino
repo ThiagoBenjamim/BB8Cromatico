@@ -1,6 +1,4 @@
-#include <ps5.h>
 #include <ps5Controller.h>
-#include <ps5_int.h>
 
 
 int m1p1 = 14;
@@ -39,9 +37,7 @@ void setPins(){
   pinMode(m2ena, OUTPUT);
 }
 
-'''void changePWM(){
 
-}'''
 
 void setup() {
   setPins();
