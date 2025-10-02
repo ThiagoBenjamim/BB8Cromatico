@@ -9,6 +9,34 @@ int m2p2 = 32;
 int m1ena = 26;
 int m2ena = 25;
 
+//não lembro qual que está em cada, ajustamos isso quando verificar!!
+void virarDireta(int analogico){
+  //aqui ajustei a intensidade com os valores q vc me passou:
+  int velocidade = map(intensidade, 11, 127, 200, 150);
+  analogWrite(m1ena, 200); // Motor 1 mais
+  analogWrite(m2ena, velocidade); // Motor 2 menos
+}
+
+void virarEsquerda(int analogico){
+  // intensidade: 11 a 127 → velocidade: 200 a 80 (proporcional)
+  int velocidade = map(abs(intensidade), 11, 128, 200, 150);
+  analogWrite(m1ena, velocidade); 
+  analogWrite(m2ena, 200);
+   
+}
+
+void valorAnalogico(){
+  int analogicoX = ps5.LStickX();
+   if(analogicoX > 10) {
+    virarDireita(analogicoX);
+  } else if(analogicoX < -10) {
+    virarEsquerda(analogicoX);
+  } else {
+    //é p parar d virar(sei que voce é burrinho e ia me perguntar dps) não tenho certeza se já controla a intensidade do motor, mas acho que sim
+    analogWrite(m1ena, 200);
+    analogWrite(m2ena, 200);
+  }
+}
 
 void notify()
 {
@@ -37,17 +65,17 @@ void setPins(){
   pinMode(m2ena, OUTPUT);
 }
 
-
-
 void setup() {
   setPins();
   Serial.begin(115200);
-  ps5.attach(notify);
+  ps5.attach(notify,valorAnalogico);
   ps5.attachOnConnect(onConnect);
   ps5.attachOnDisconnect(onDisConnect);
   ps5.begin("7c:66:ef:47:77:74");
 }
 
 void loop() {
+
   
 }
+
